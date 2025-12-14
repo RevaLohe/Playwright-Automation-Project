@@ -1,6 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { testIds } from "../selectors/selectors.spec";
-
+import { testIds } from "../selectors/allselectors.ts";
 
 export class LoginPage{
 
