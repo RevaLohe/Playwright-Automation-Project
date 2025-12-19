@@ -1,22 +1,13 @@
-import { expect, test } from '@playwright/test'
+import { expect } from '@playwright/test'
+import { test } from '../../fixtures/HooksFixtures.spec';
 import { LoginPage } from '../../pages/Login.spec'
 import { users } from '../../test-data/users.spec';
 import { Dashboard } from '../../pages/Dashboard.spec';
 
 test.describe("Login Module", () => {
 
-    test("Login with valid credentials @smoke", async ({ page }) => {
-
-        const loginPage = new LoginPage(page);
+    test("Login with valid credentials @smoke", async ({ loginLogoutFixture, page }) => {
         const dashboardPage = new Dashboard(page);
-
-        await test.step("Navigate to Login page", async () => {
-            await loginPage.openPage();
-        })
-
-        await test.step("Login with valid credentials", async () => {
-            await loginPage.login(users.valid.username, users.valid.password)
-        })
 
         await test.step("Verify Dashboard page is loaded", async () => {
             await dashboardPage.assertLoaded()
