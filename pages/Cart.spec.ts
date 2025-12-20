@@ -43,4 +43,9 @@ export class Cart {
         await this.continueShoppingBtn.click();
         await expect(this.page).toHaveURL(/inventory/);
     }
+
+    async goToCheckout() {
+        await this.checkoutBtn.click();
+        await expect(this.page).toHaveURL(/checkout-step-one\.html/);
+    }
 }

@@ -29,7 +29,7 @@ export class Inventory {
         return 0;
     }
 
-    async printInventoryItems(){
+    async printInventoryItems() {
         console.log(this.inventoryItems)
         const count = await this.inventoryItems.count();
         console.log(count);
@@ -37,18 +37,18 @@ export class Inventory {
         console.log(innnerText);
     }
 
-    
 
-    async assertProductPageLoaded(){
+
+    async assertProductPageLoaded() {
         expect(this.page).toHaveURL(/inventory/)
         expect(this.pageTitle).toBeVisible();
         expect(this.pageTitle).toHaveText("Products")
     }
 
-    async addItemToTheCartByName(itemname: string){
+    async addItemToTheCartByName(itemname: string) {
         //Check if the item exists in the inventory & count should be alteast one
         const cart = this.itemCartByName(itemname);
-        await expect(cart).toHaveCount(1); 
+        await expect(cart).toHaveCount(1);
 
         const addButton = cart.locator("button:has-text('Add to cart')");
         addButton.click();
@@ -57,22 +57,36 @@ export class Inventory {
     }
 
 
-    private itemCartByName(itemName :string){
+    private itemCartByName(itemName: string) {
         return this.inventoryItems.filter({
-            has: this.page.locator(".inventory_item_name",{hasText:itemName})
+            has: this.page.locator(".inventory_item_name", { hasText: itemName })
         });
     }
 
-    async openCart(){
+    async openCart() {
         this.cartIcon.click();
         await expect(this.page).toHaveURL(/cart\.html/)
     }
 
-      async assertCartBadgeCount(expected: number) {
-    if (expected === 0) {
-      await expect(this.cartBadge).toHaveCount(0);
-    } else {
-      await expect(this.cartBadge).toHaveText(String(expected));
+    async assertCartBadgeCount(expected: number) {
+        if (expected === 0) {
+            await expect(this.cartBadge).toHaveCount(0);
+        } else {
+            await expect(this.cartBadge).toHaveText(String(expected));
+        }
     }
-  }
+
+    async removeItemFromCartByName(itemName: string) {
+        const card = this.itemCartByName(itemName);
+        await expect(card).toHaveCount(1);
+
+        const removeBtn = card.locator("button:has-text('Remove')");
+        await removeBtn.click();
+
+        await expect(card.locator("button")).toHaveText(/Add to cart/i);
+    }
+
+    async assertCartBadgeHidden() {
+        await expect(this.cartBadge).toHaveCount(0);
+    }
 }
