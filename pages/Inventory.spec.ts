@@ -29,9 +29,50 @@ export class Inventory {
         return 0;
     }
 
+    async printInventoryItems(){
+        console.log(this.inventoryItems)
+        const count = await this.inventoryItems.count();
+        console.log(count);
+        const innnerText = await this.inventoryItems.allInnerTexts();
+        console.log(innnerText);
+    }
+
+    
+
     async assertProductPageLoaded(){
         expect(this.page).toHaveURL(/inventory/)
         expect(this.pageTitle).toBeVisible();
         expect(this.pageTitle).toHaveText("Products")
     }
+
+    async addItemToTheCartByName(itemname: string){
+        //Check if the item exists in the inventory & count should be alteast one
+        const cart = this.itemCartByName(itemname);
+        await expect(cart).toHaveCount(1); 
+
+        const addButton = cart.locator("button:has-text('Add to cart')");
+        addButton.click();
+
+        await expect(cart.locator("button")).toHaveText(/Remove/)
+    }
+
+
+    private itemCartByName(itemName :string){
+        return this.inventoryItems.filter({
+            has: this.page.locator(".inventory_item_name",{hasText:itemName})
+        });
+    }
+
+    async openCart(){
+        this.cartIcon.click();
+        await expect(this.page).toHaveURL(/cart\.html/)
+    }
+
+      async assertCartBadgeCount(expected: number) {
+    if (expected === 0) {
+      await expect(this.cartBadge).toHaveCount(0);
+    } else {
+      await expect(this.cartBadge).toHaveText(String(expected));
+    }
+  }
 }

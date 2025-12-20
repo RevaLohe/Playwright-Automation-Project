@@ -9,5 +9,9 @@ export const testIds = {
     cartBadge: '[data-test="shopping-cart-badge"]',
     cartIcon: '[data-test="shopping-cart-link"]',
     sortDropdown: '[data-test="product-sort-container"]',
-    logOutBnutton: '[data-test="logout-sidebar-link"]'
+    logOutBnutton: '[data-test="logout-sidebar-link"]',
+
+    cartItems: '[data-test="inventory-item"]',
+    continueShoppingButton: '[data-test="continue-shopping"]',
+    checkoutButton: '[data-test="checkout"]'
 } as const

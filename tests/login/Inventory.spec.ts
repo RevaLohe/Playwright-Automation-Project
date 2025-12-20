@@ -12,6 +12,4 @@ test.describe("Inventory (Products listing) module", () => {
         await inventoryPage.assertProductPageLoaded();
     })
 
-    
-
 })
