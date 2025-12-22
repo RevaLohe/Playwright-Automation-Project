@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { BookingsClient } from "../clients/bookingsClient.spec"
+import { BookingsClient } from "../clients/bookingsClient"
 import { CreateBookingRequest } from "../model/createBookingRequest";
 import { BookingResponse } from "../model/createBookingResponse";
 
