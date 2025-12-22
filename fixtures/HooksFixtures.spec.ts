@@ -21,9 +21,6 @@ export const test = baseTest.extend<HooksFixtures>({
         await loginPage.login(users.valid.username, users.valid.password);
         
         await use(loginPage);
-
-        //await loginPage.logOut();
-
     }, 
 
     inventoryFixture: async({page},use)=>{
