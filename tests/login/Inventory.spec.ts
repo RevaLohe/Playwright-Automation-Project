@@ -1,8 +1,5 @@
-
-import { test } from '../../fixtures/HooksFixtures.spec';
-import { LoginPage } from '../../pages/Login.spec'
-import { users } from '../../test-data/users.spec';
-import { Inventory } from '../../pages/Inventory.spec';
+import { test } from '../../fixtures/HooksFixtures';
+import { Inventory } from '../../pages/Inventory';
 
 test.describe("Inventory (Products listing) module", () => {
 

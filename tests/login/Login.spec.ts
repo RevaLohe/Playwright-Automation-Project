@@ -1,8 +1,7 @@
-import { expect } from '@playwright/test'
-import { test } from '../../fixtures/HooksFixtures.spec';
-import { LoginPage } from '../../pages/Login.spec'
-import { users } from '../../test-data/users.spec';
-import { Dashboard } from '../../pages/Dashboard.spec';
+import { test , expect} from '../../fixtures/HooksFixtures';
+import { LoginPage } from '../../pages/Login'
+import { users } from '../../test-data/users';
+import { Dashboard } from '../../pages/Dashboard';
 
 test.describe("Login Module", () => {
 

@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { test } from '../../fixtures/HooksFixtures.spec'
+
+import { test , expect} from '../../fixtures/HooksFixtures'
 
 test.describe("Cart Test", () => {
 

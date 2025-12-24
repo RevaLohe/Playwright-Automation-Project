@@ -1,4 +1,5 @@
-import { APIRequestContext, expect } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { expect } from "../../../fixtures/HooksFixtures";
 import { CreateBookingRequest } from "../model/createBookingRequest";
 import { BookingResponse } from '../model/createBookingResponse'
 

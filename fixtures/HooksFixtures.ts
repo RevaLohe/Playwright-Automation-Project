@@ -1,8 +1,8 @@
-import{test as baseTest} from '@playwright/test'
-import { LoginPage } from '../pages/Login.spec'
-import { users } from '../test-data/users.spec'
-import { Inventory } from '../pages/Inventory.spec'
-import { Cart } from '../pages/Cart.spec'
+import{test as baseTest,expect} from '@playwright/test'
+import { LoginPage } from '../pages/Login'
+import { users } from '../test-data/users'
+import { Inventory } from '../pages/Inventory'
+import { Cart } from '../pages/Cart'
 
 type HooksFixtures={
     loginLogoutFixture: LoginPage,
@@ -34,4 +34,6 @@ export const test = baseTest.extend<HooksFixtures>({
         await use(cartPage);
 
     }
-})
+});
+
+export { expect};
