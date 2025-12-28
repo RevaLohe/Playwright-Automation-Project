@@ -1,0 +1,11 @@
+{
+        "firstname": "Jimmy",
+        "lastname": "Brownee",
+        "totalprice": 1188,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2014-11-01",
+            "checkout": "2012-08-01"
+    },
+        "additionalneeds": "Breakfast"
+}

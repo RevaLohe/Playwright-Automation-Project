@@ -2,6 +2,7 @@ import { test, expect } from "../../../fixtures/HooksFixtures";
 import { BookingsClient } from "../clients/bookingsClient";
 import { CreateBookingRequest } from "../model/createBookingRequest";
 import { BookingResponse } from "../model/createBookingResponse";
+import { readFromJson } from "../util/jsonReader";
 
 test("GET products @smoke @API", async ({ request }) => {
     const client = new BookingsClient(request);
@@ -12,17 +13,7 @@ test("GET products @smoke @API", async ({ request }) => {
 test("POST /booking create booking (separate models) @smoke @API", async ({ request }) => {
     const client = new BookingsClient(request);
 
-    const payload: CreateBookingRequest = {
-        firstname: "Jimmy",
-        lastname: "Brown",
-        totalprice: 112,
-        depositpaid: true,
-        bookingdates: {
-            checkin: "2018-11-01",
-            checkout: "2019-08-01"
-        },
-        additionalneeds: "Breakfast"
-    };
+    const payload: CreateBookingRequest = readFromJson("test-data/createBooking.json");
 
     const response: BookingResponse = await client.postBooking(payload);
 
