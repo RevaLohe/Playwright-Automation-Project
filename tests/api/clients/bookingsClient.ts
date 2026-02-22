@@ -13,10 +13,17 @@ export class BookingsClient {
     return response.json();
   }
 
-  /** Get auth token for DELETE (Cookie auth). Credentials: admin / password123 */
+  /** Get auth token for DELETE (Cookie auth). Set RESTFUL_BOOKER_USERNAME and RESTFUL_BOOKER_PASSWORD in .env or GitHub Secrets. */
   async createToken(): Promise<string> {
+    const username = process.env.RESTFUL_BOOKER_USERNAME;
+    const password = process.env.RESTFUL_BOOKER_PASSWORD;
+    if (!username || !password) {
+      throw new Error(
+        'Missing RESTFUL_BOOKER_USERNAME or RESTFUL_BOOKER_PASSWORD. Set in .env or GitHub Secrets.'
+      );
+    }
     const response = await this.request.post('/auth', {
-      data: { username: 'admin', password: 'password123' },
+      data: { username, password },
       headers: { 'Content-Type': 'application/json' }
     });
     expect(response.ok(), await response.text()).toBeTruthy();

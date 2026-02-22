@@ -25,11 +25,20 @@ jobs:
         run: mkdir -p playwright-report
 
       - name: Run Playwright tests in Docker
+        env:
+          SAUCE_DEMO_USERNAME: ${{ secrets.SAUCE_DEMO_USERNAME }}
+          SAUCE_DEMO_PASSWORD: ${{ secrets.SAUCE_DEMO_PASSWORD }}
+          RESTFUL_BOOKER_USERNAME: ${{ secrets.RESTFUL_BOOKER_USERNAME }}
+          RESTFUL_BOOKER_PASSWORD: ${{ secrets.RESTFUL_BOOKER_PASSWORD }}
         run: |
           docker run --rm \
             --ipc=host \
             --init \
             -e CI=true \
+            -e SAUCE_DEMO_USERNAME \
+            -e SAUCE_DEMO_PASSWORD \
+            -e RESTFUL_BOOKER_USERNAME \
+            -e RESTFUL_BOOKER_PASSWORD \
             -v "${{ github.workspace }}/playwright-report:/app/playwright-report" \
             playwright-tests
 

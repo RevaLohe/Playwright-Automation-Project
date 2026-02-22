@@ -70,6 +70,16 @@ npx playwright test --ui
 
 ---
 
+## Environment variables and secrets
+
+Credentials are **not** stored in the repo. Use environment variables so your API keys and passwords stay private when the project is public.
+
+### Local
+
+1. Copy the example file: `cp .env.example .env`
+2. Open `.env` and set the values (see below). **Do not commit `.env`** (it is in `.gitignore`).
+
+
 ##  Test Reports
 
 Playwright HTML reports are generated automatically.

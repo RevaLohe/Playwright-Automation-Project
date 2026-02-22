@@ -13,9 +13,10 @@ blob-report
 *.md
 !README.md
 
-# Env and secrets
+# Env and secrets (injected at runtime in CI via GitHub Secrets)
 .env
 .env.*
+.env.local
 
 # OS
 .DS_Store
