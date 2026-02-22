@@ -80,13 +80,25 @@ npx playwright show-report
 
 ---
 
+## CI/CD (GitHub Actions)
+
+### GitHub Actions
+
+Tests run automatically on **push** and **pull requests** to `main` or `master`. The workflow runs tests **inside a Docker image on GitHub Actions only** (locally use `npm test` or `npx playwright test` as usual).
+
+- **Workflow file:** `.github/workflows/playwright.yml`
+- **What it does:** Builds the Playwright Docker image, runs all tests inside the container on the runner, and uploads the HTML report as an artifact (retained 30 days).
+- **Dockerfile:** Used only in CI; based on `mcr.microsoft.com/playwright` (Node + browsers), installs dependencies, runs `playwright test`.
+- **.dockerignore:** Keeps the build context small by excluding `node_modules`, reports, and IDE/git files.
+
+---
+
 ##  Upcoming Enhancements
 
 * Additional functional modules
 * API validations
 * Reusable utilities & helpers
 * Environment-based execution
-* CI/CD integration
 * Advanced reporting & logging
 
 ---
