@@ -21,7 +21,7 @@ export class Inventory {
         this.sortDropdown = page.locator(testIds.sortDropdown);
     }
 
-    async getCartItemCount(): Promise<Number> {
+    async getCartItemCount(): Promise<number> {
         if (await this.cartBadge.isVisible()) {
             const count = await this.cartBadge.innerText();
             return Number(count);
@@ -29,31 +29,27 @@ export class Inventory {
         return 0;
     }
 
-    async printInventoryItems() {
-        console.log(this.inventoryItems)
-        const count = await this.inventoryItems.count();
-        console.log(count);
-        const innnerText = await this.inventoryItems.allInnerTexts();
-        console.log(innnerText);
+    async printInventoryItems(): Promise<void> {
+        // Debug helper - add console.log of count/innerText if needed for troubleshooting
     }
 
 
 
     async assertProductPageLoaded() {
-        expect(this.page).toHaveURL(/inventory/)
-        expect(this.pageTitle).toBeVisible();
-        expect(this.pageTitle).toHaveText("Products")
+        await expect(this.page).toHaveURL(/inventory/);
+        await expect(this.pageTitle).toBeVisible();
+        await expect(this.pageTitle).toHaveText("Products");
     }
 
     async addItemToTheCartByName(itemname: string) {
-        //Check if the item exists in the inventory & count should be alteast one
+        // Check if the item exists in the inventory & count should be at least one
         const cart = this.itemCartByName(itemname);
         await expect(cart).toHaveCount(1);
 
         const addButton = cart.locator("button:has-text('Add to cart')");
-        addButton.click();
+        await addButton.click();
 
-        await expect(cart.locator("button")).toHaveText(/Remove/)
+        await expect(cart.locator("button")).toHaveText(/Remove/);
     }
 
 
@@ -64,8 +60,8 @@ export class Inventory {
     }
 
     async openCart() {
-        this.cartIcon.click();
-        await expect(this.page).toHaveURL(/cart\.html/)
+        await this.cartIcon.click();
+        await expect(this.page).toHaveURL(/cart\.html/);
     }
 
     async assertCartBadgeCount(expected: number) {

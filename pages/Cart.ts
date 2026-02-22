@@ -1,12 +1,12 @@
 import { expect, Locator, Page } from "@playwright/test"; 
-import { testIds } from "../selectors/allselectors"
+import { testIds } from "../selectors/allselectors";
 
 export class Cart {
 
-    private page: Page;
+    private readonly page: Page;
     private readonly cartItem: Locator;
     private readonly continueShoppingBtn: Locator;
-    private readonly checkoutBtn: Locator
+    private readonly checkoutBtn: Locator;
 
     constructor(page: Page) {
         this.page = page;

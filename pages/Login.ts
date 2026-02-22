@@ -7,8 +7,8 @@ export class LoginPage{
     private readonly usernameInput : Locator;
     private readonly passwordInput: Locator;
     private readonly submitButton: Locator;
-    private readonly errorMessgae: Locator;
-    private readonly hamburgurMenu: Locator;
+    private readonly errorMessage: Locator;
+    private readonly hamburgerMenu: Locator;
     private readonly logoutButton: Locator;
 
     constructor(page: Page){
@@ -16,9 +16,9 @@ export class LoginPage{
         this.usernameInput = page.locator(testIds.usernameInput);
         this.passwordInput = page.locator(testIds.passwordInput);
         this.submitButton = page.locator(testIds.loginButton);
-        this.errorMessgae = page.locator(testIds.errorMessage);
-        this.hamburgurMenu = page.getByRole('button', { name: 'Open Menu' })
-        this.logoutButton = page.locator(testIds.logOutBnutton)
+        this.errorMessage = page.locator(testIds.errorMessage);
+        this.hamburgerMenu = page.getByRole('button', { name: 'Open Menu' });
+        this.logoutButton = page.locator(testIds.logoutButton);
         
     }
 
@@ -33,11 +33,11 @@ export class LoginPage{
     }
 
     async assertLoginError(){
-        await expect(this.errorMessgae).toContainText(/do not match any user in this service/);
+        await expect(this.errorMessage).toContainText(/do not match any user in this service/);
     }
 
     async logOut(){
-        await this.hamburgurMenu.click();
+        await this.hamburgerMenu.click();
         await this.logoutButton.click();
         await expect(this.submitButton).toBeVisible();
     }

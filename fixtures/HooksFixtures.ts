@@ -1,18 +1,18 @@
-import{test as baseTest,expect} from '@playwright/test'
-import { LoginPage } from '../pages/Login'
-import { users } from '../test-data/users'
-import { Inventory } from '../pages/Inventory'
-import { Cart } from '../pages/Cart'
+import { test as baseTest, expect } from '@playwright/test';
+import { LoginPage } from '../pages/Login';
+import { users } from '../test-data/users';
+import { Inventory } from '../pages/Inventory';
+import { Cart } from '../pages/Cart';
 
-type HooksFixtures={
-    loginLogoutFixture: LoginPage,
-    inventoryFixture: Inventory,
-    cartFixutre: Cart
-}
+type HooksFixtures = {
+    loginLogoutFixture: LoginPage;
+    inventoryFixture: Inventory;
+    cartFixture: Cart;
+};
 
 export const test = baseTest.extend<HooksFixtures>({
 
-    loginLogoutFixture: async ({page}, use)=>{
+    loginLogoutFixture: async ({ page }, use) => {
 
         const loginPage = new LoginPage(page);
 
@@ -23,17 +23,17 @@ export const test = baseTest.extend<HooksFixtures>({
         await use(loginPage);
     }, 
 
-    inventoryFixture: async({page},use)=>{
+    inventoryFixture: async ({ page }, use) => {
         const inventoryPage = new Inventory(page);
         await use(inventoryPage);
 
     },
 
-    cartFixutre: async({page},use)=>{
+    cartFixture: async ({ page }, use) => {
         const cartPage = new Cart(page);
         await use(cartPage);
 
     }
 });
 
-export { expect};
+export { expect };
