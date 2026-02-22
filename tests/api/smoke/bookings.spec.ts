@@ -26,19 +26,24 @@ test("POST /booking create booking (separate models) @smoke @API", async ({ requ
 
 test("GET /booking/:id fetch booking by id @smoke @API", async ({ request }) => {
     const client = new BookingsClient(request);
-    const id = 744;
+    const payload = readFromJson("test-data/createBooking.json");
+    const created = await client.postBooking(payload);
+    const id = created.bookingid;
 
     const response = await client.getBookingById(id);
 
-    expect(response.firstname).toBeTruthy();
-    expect(response.lastname).toBeTruthy();
+    expect(response.firstname).toBe(payload.firstname);
+    expect(response.lastname).toBe(payload.lastname);
 });
 
 test("DELETE /booking/:id delete booking @smoke @API", async ({ request }) => {
     const client = new BookingsClient(request);
-    const id = 1221;
+    const payload = readFromJson("test-data/createBooking.json");
+    const created = await client.postBooking(payload);
+    const id = created.bookingid;
+    const token = await client.createToken();
 
-    await client.deleteBooking(id);
+    await client.deleteBooking(id, token);
 
     // Verify booking is deleted
     const getResponse = await request.get(`/booking/${id}`);
