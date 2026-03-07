@@ -1,0 +1,76 @@
+# Azure DevOps Pipeline for Playwright tests (Docker)
+# When it runs: on push to develop/main/master, and on PRs targeting those branches.
+# Configure branches below (trigger + pr).
+
+trigger:
+  branches:
+    include:
+      - develop
+      - main
+      - master
+  paths:
+    exclude:
+      - '*.md'
+      - 'docs/*'
+
+pr:
+  branches:
+    include:
+      - develop
+      - main
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerImageName: 'playwright-tests'
+
+stages:
+  - stage: Test
+    displayName: 'Run Playwright tests'
+    jobs:
+      - job: PlaywrightTests
+        displayName: 'Playwright tests in Docker'
+        timeoutInMinutes: 60
+        steps:
+          - checkout: self
+            displayName: 'Checkout repository'
+
+          - task: Docker@2
+            displayName: 'Build Docker image'
+            inputs:
+              command: build
+              Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+              repository: '$(dockerImageName)'
+              tags: latest
+
+          - script: |
+              mkdir -p $(Build.ArtifactStagingDirectory)/playwright-report
+            displayName: 'Create report directory'
+
+          - script: |
+              docker run --rm \
+                --ipc=host \
+                --init \
+                -e CI=true \
+                -e SAUCE_DEMO_USERNAME="$(SAUCE_DEMO_USERNAME)" \
+                -e SAUCE_DEMO_PASSWORD="$(SAUCE_DEMO_PASSWORD)" \
+                -e RESTFUL_BOOKER_USERNAME="$(RESTFUL_BOOKER_USERNAME)" \
+                -e RESTFUL_BOOKER_PASSWORD="$(RESTFUL_BOOKER_PASSWORD)" \
+                -v "$(Build.ArtifactStagingDirectory)/playwright-report:/app/playwright-report" \
+                $(dockerImageName):latest
+            displayName: 'Run Playwright tests in Docker'
+            env:
+              SAUCE_DEMO_USERNAME: $(SAUCE_DEMO_USERNAME)
+              SAUCE_DEMO_PASSWORD: $(SAUCE_DEMO_PASSWORD)
+              RESTFUL_BOOKER_USERNAME: $(RESTFUL_BOOKER_USERNAME)
+              RESTFUL_BOOKER_PASSWORD: $(RESTFUL_BOOKER_PASSWORD)
+
+          - task: PublishBuildArtifacts@1
+            condition: always()
+            displayName: 'Publish Playwright report'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/playwright-report'
+              ArtifactName: 'playwright-report'
+              publishLocation: 'Container'
