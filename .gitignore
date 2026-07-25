@@ -3,6 +3,9 @@
 .env.local
 .env.*.local
 
+# Editor / IDE (local only)
+.vscode/
+
 # Playwright
 node_modules/
 /test-results/
