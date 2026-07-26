@@ -1,6 +1,11 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { testIds } from "../selectors/allselectors";
 
+export type SortOption =
+    | "az"
+    | "za"
+    | "lohi"
+    | "hilo";
 
 export class Inventory {
 
@@ -29,20 +34,22 @@ export class Inventory {
         return 0;
     }
 
-    async printInventoryItems(): Promise<void> {
-        // Debug helper - add console.log of count/innerText if needed for troubleshooting
-    }
-
-
-
     async assertProductPageLoaded() {
         await expect(this.page).toHaveURL(/inventory/);
         await expect(this.pageTitle).toBeVisible();
         await expect(this.pageTitle).toHaveText("Products");
     }
 
+    async assertProductCount(expected: number) {
+        await expect(this.inventoryItems).toHaveCount(expected);
+    }
+
+    async assertItemPrice(itemName: string, expectedPrice: string) {
+        const card = this.itemCartByName(itemName);
+        await expect(card.locator(".inventory_item_price")).toHaveText(expectedPrice);
+    }
+
     async addItemToTheCartByName(itemname: string) {
-        // Check if the item exists in the inventory & count should be at least one
         const cart = this.itemCartByName(itemname);
         await expect(cart).toHaveCount(1);
 
@@ -51,7 +58,6 @@ export class Inventory {
 
         await expect(cart.locator("button")).toHaveText(/Remove/);
     }
-
 
     private itemCartByName(itemName: string) {
         return this.inventoryItems.filter({
@@ -84,5 +90,31 @@ export class Inventory {
 
     async assertCartBadgeHidden() {
         await expect(this.cartBadge).toHaveCount(0);
+    }
+
+    async sortBy(option: SortOption) {
+        await this.sortDropdown.selectOption(option);
+    }
+
+    async getFirstItemName(): Promise<string> {
+        return (await this.inventoryItems.first().locator(".inventory_item_name").innerText()).trim();
+    }
+
+    async getFirstItemPrice(): Promise<string> {
+        return (await this.inventoryItems.first().locator(".inventory_item_price").innerText()).trim();
+    }
+
+    async assertFirstItemName(expected: string) {
+        await expect(this.inventoryItems.first().locator(".inventory_item_name")).toHaveText(expected);
+    }
+
+    async assertFirstItemPrice(expected: string) {
+        await expect(this.inventoryItems.first().locator(".inventory_item_price")).toHaveText(expected);
+    }
+
+    async openProductByName(itemName: string) {
+        const card = this.itemCartByName(itemName);
+        await card.locator(".inventory_item_name").click();
+        await expect(this.page).toHaveURL(/inventory-item\.html/);
     }
 }

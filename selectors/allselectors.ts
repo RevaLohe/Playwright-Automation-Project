@@ -6,12 +6,31 @@ export const testIds = {
 
     pageTitle: '[data-test="title"]',
     inventoryItems: '[data-test="inventory-item"]',
+    inventoryItemName: '[data-test="inventory-item-name"]',
+    inventoryItemDesc: '[data-test="inventory-item-desc"]',
+    inventoryItemPrice: '[data-test="inventory-item-price"]',
     cartBadge: '[data-test="shopping-cart-badge"]',
     cartIcon: '[data-test="shopping-cart-link"]',
     sortDropdown: '[data-test="product-sort-container"]',
     logoutButton: '[data-test="logout-sidebar-link"]',
+    resetAppStateButton: '[data-test="reset-sidebar-link"]',
+    allItemsLink: '[data-test="inventory-sidebar-link"]',
+    backToProducts: '[data-test="back-to-products"]',
 
     cartItems: '[data-test="inventory-item"]',
     continueShoppingButton: '[data-test="continue-shopping"]',
-    checkoutButton: '[data-test="checkout"]'
+    checkoutButton: '[data-test="checkout"]',
+
+    firstNameInput: '[data-test="firstName"]',
+    lastNameInput: '[data-test="lastName"]',
+    postalCodeInput: '[data-test="postalCode"]',
+    continueButton: '[data-test="continue"]',
+    cancelButton: '[data-test="cancel"]',
+    finishButton: '[data-test="finish"]',
+    completeHeader: '[data-test="complete-header"]',
+    completeText: '[data-test="complete-text"]',
+    subtotalLabel: '[data-test="subtotal-label"]',
+    taxLabel: '[data-test="tax-label"]',
+    totalLabel: '[data-test="total-label"]',
+    summaryInfo: '[data-test="payment-info-label"]',
 } as const

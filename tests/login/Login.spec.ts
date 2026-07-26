@@ -1,4 +1,4 @@
-import { test , expect} from '../../fixtures/HooksFixtures';
+import { test, expect } from '../../fixtures/HooksFixtures';
 import { LoginPage } from '../../pages/Login'
 import { users } from '../../test-data/users';
 import { Dashboard } from '../../pages/Dashboard';
@@ -29,5 +29,19 @@ test.describe("Login Module", () => {
             await loginPage.assertLoginError()
         })
     })
-})
 
+    test("Locked out user should see locked out error @regression", async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        await loginPage.openPage();
+        await loginPage.login(users.lockedOut.username, users.lockedOut.password);
+        await loginPage.assertErrorContains(/sorry, this user has been locked out/i);
+    })
+
+    test("Logout returns to login and blocks inventory access @smoke", async ({ loginLogoutFixture, page }) => {
+        await loginLogoutFixture.logOut();
+        await loginLogoutFixture.assertOnLoginPage();
+
+        await page.goto("https://www.saucedemo.com/inventory.html");
+        await expect(page.locator('[data-test="login-button"]')).toBeVisible();
+    })
+})

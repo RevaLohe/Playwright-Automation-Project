@@ -8,7 +8,7 @@ export interface CreateBookingRequest {
         "firstname": string,
         "lastname": string,
         "totalprice": number,
-        "depositpaid": true,
+        "depositpaid": boolean,
         "bookingdates": BookingDateRequest,
         "additionalneeds": string
 }
