@@ -1,6 +1,5 @@
 import { test as baseTest, expect } from '@playwright/test';
 import { LoginPage } from '../pages/Login';
-import { users } from '../test-data/users';
 import { Inventory } from '../pages/Inventory';
 import { Cart } from '../pages/Cart';
 import { CheckoutInfo } from '../pages/CheckoutInfo';
@@ -21,15 +20,11 @@ type HooksFixtures = {
 export const test = baseTest.extend<HooksFixtures>({
 
     loginLogoutFixture: async ({ page }, use) => {
-
         const loginPage = new LoginPage(page);
-
-        //Login
-        await loginPage.openPage();
-        await loginPage.login(users.valid.username, users.valid.password);
-        
+        // Session comes from storage state (auth.setup.ts); just open the app logged-in.
+        await page.goto('https://www.saucedemo.com/inventory.html');
         await use(loginPage);
-    }, 
+    },
 
     inventoryFixture: async ({ page }, use) => {
         const inventoryPage = new Inventory(page);

@@ -14,27 +14,31 @@ test.describe("Login Module", () => {
 
     })
 
-    test("Invalid credentials should show error @regression", async ({ page }) => {
-        const loginPage = new LoginPage(page);
+    test.describe("Unauthenticated flows", () => {
+        test.use({ storageState: { cookies: [], origins: [] } });
 
-        await test.step("Navigate to Login page", async () => {
+        test("Invalid credentials should show error @regression", async ({ page }) => {
+            const loginPage = new LoginPage(page);
+
+            await test.step("Navigate to Login page", async () => {
+                await loginPage.openPage();
+            })
+
+            await test.step("Login with invalid credentials", async () => {
+                await loginPage.login(users.invalid.username, users.invalid.password)
+            })
+
+            await test.step("Verify Error Message page is pops up", async () => {
+                await loginPage.assertLoginError()
+            })
+        })
+
+        test("Locked out user should see locked out error @regression", async ({ page }) => {
+            const loginPage = new LoginPage(page);
             await loginPage.openPage();
+            await loginPage.login(users.lockedOut.username, users.lockedOut.password);
+            await loginPage.assertErrorContains(/sorry, this user has been locked out/i);
         })
-
-        await test.step("Login with invalid credentials", async () => {
-            await loginPage.login(users.invalid.username, users.invalid.password)
-        })
-
-        await test.step("Verify Error Message page is pops up", async () => {
-            await loginPage.assertLoginError()
-        })
-    })
-
-    test("Locked out user should see locked out error @regression", async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        await loginPage.openPage();
-        await loginPage.login(users.lockedOut.username, users.lockedOut.password);
-        await loginPage.assertErrorContains(/sorry, this user has been locked out/i);
     })
 
     test("Logout returns to login and blocks inventory access @smoke", async ({ loginLogoutFixture, page }) => {
