@@ -13,6 +13,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/allure-results/
+/allure-report/
 tests/dashboard
 
 # Documentation (local only)

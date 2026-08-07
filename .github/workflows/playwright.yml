@@ -24,8 +24,8 @@ jobs:
       - name: Build Docker image
         run: docker build -t playwright-tests .
 
-      - name: Create report directory
-        run: mkdir -p playwright-report
+      - name: Create report directories
+        run: mkdir -p playwright-report allure-results
 
       - name: Run Playwright tests in Docker
         env:
@@ -43,7 +43,34 @@ jobs:
             -e RESTFUL_BOOKER_USERNAME \
             -e RESTFUL_BOOKER_PASSWORD \
             -v "${{ github.workspace }}/playwright-report:/app/playwright-report" \
+            -v "${{ github.workspace }}/allure-results:/app/allure-results" \
             playwright-tests
+
+      - name: Install Allure CLI
+        if: ${{ !cancelled() }}
+        run: |
+          curl -Lo allure-2.32.0.tgz https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz
+          tar -zxf allure-2.32.0.tgz -C /opt/
+          echo "/opt/allure-2.32.0/bin" >> $GITHUB_PATH
+
+      - name: Load previous Allure history
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure history
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -d gh-pages/history ]; then
+            cp -r gh-pages/history allure-results/history
+          fi
+
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: allure generate allure-results -o allure-report --clean
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -52,3 +79,19 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+
+      - name: Publish Allure report to GitHub Pages
+        if: github.ref == 'refs/heads/main' && !cancelled()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          keep_files: false
